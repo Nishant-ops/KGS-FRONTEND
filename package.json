@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://kgs-backend.vercel.app/",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://kgs-backend.vercel.app/",

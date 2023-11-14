@@ -14,7 +14,7 @@ function Main() {
     getShows();
   }, []);
   const getShows = async () => {
-    const data = await axios.get("/show");
+    const data = await axios.get("https://kgs-backend.vercel.app/show");
     if (data.data.data != null || data.data.data != undefined) {
       setHasShow(true);
       setShow(data.data.data.showData[0]);
@@ -29,9 +29,13 @@ function Main() {
       adminName: showAdmin,
       adminId: localStorage.getItem("id"),
     };
-    const data = await axios.post("/show", JSON.stringify(showData), {
-      headers: { "Content-Type": "application/json" },
-    });
+    const data = await axios.post(
+      "https://kgs-backend.vercel.app/show",
+      JSON.stringify(showData),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     console.log(data);
   };

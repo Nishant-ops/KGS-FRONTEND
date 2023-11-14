@@ -24,7 +24,7 @@ function Chat({ showId }) {
     getMessage();
   }, []);
   const getShow = async () => {
-    const res = await axios.get(`http://localhost:8080/show/${showId}`);
+    const res = await axios.get(`/show/${showId}`);
     if (res.data.data.showData[0].adminId == localStorage.getItem("id")) {
       localStorage.setItem("role", "admin");
       setUserRole("admin");
@@ -38,7 +38,7 @@ function Chat({ showId }) {
     console.log(res);
   };
   const getMessage = async () => {
-    const res = await axios.get("http://localhost:8080/message");
+    const res = await axios.get("/message");
     console.log(res);
     setChatMessages((curr) => [...curr, ...res.data.data.message]);
     if (res.data.data.pinned != undefined || res.data.data.pinned != null) {
@@ -69,11 +69,9 @@ function Chat({ showId }) {
     setInputMessage("");
     console.log(ws);
     if (ws.current.readyState === 1) ws.current.send(JSON.stringify(a));
-    const req = await axios.post(
-      "http://localhost:8080/message",
-      JSON.stringify(a),
-      { headers: { "Content-Type": "application/json" } }
-    );
+    const req = await axios.post("/message", JSON.stringify(a), {
+      headers: { "Content-Type": "application/json" },
+    });
     const end = document.querySelector(".end-div");
   };
   const handlePinClick = async (a, b) => {
@@ -83,10 +81,7 @@ function Chat({ showId }) {
         name: pinnedMsg.name,
         type: "unpinned",
       };
-      const res = await axios.delete(
-        "http://localhost:8080/pinned/varun",
-        JSON.stringify(pin)
-      );
+      const res = await axios.delete("/pinned/varun", JSON.stringify(pin));
       if (ws.current.readyState === 1) ws.current.send(JSON.stringify(pin));
     } else {
       const pin = {
@@ -94,11 +89,9 @@ function Chat({ showId }) {
         name: a,
         type: "pinned",
       };
-      const res = await axios.post(
-        "http://localhost:8080/pinned",
-        JSON.stringify(pin),
-        { headers: { "Content-Type": "application/json" } }
-      );
+      const res = await axios.post("/pinned", JSON.stringify(pin), {
+        headers: { "Content-Type": "application/json" },
+      });
       if (ws.current.readyState === 1) ws.current.send(JSON.stringify(pin));
     }
   };

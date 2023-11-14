@@ -55,7 +55,7 @@ function WebSocketContextProvider(props) {
       !ws ||
       !ws.current ||
       ws.current.readyState !== WebSocket.OPEN ||
-      Date.now() - startTime > 600000
+      Date.now() - startTime > 300000
     ) {
       startTime = Date.now();
       estblishConnection();

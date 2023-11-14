@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import Chat from "./Component/Chat/Chat";
+import Main from "./Component/Main/Main";
+import Player from "./Component/Player/Player";
+import WebSocketContextProvider from "./Component/WebSocketContext/WebSocketContextProvider";
+import Axios from "axios";
+import { generateUuid } from "./utils";
 
 function App() {
+  const [showId, setShowId] = useState(
+    window.location.pathname.substring(
+      window.location.pathname.lastIndexOf("/") + 1
+    )
+  );
+  useEffect(() => {
+    if (localStorage.getItem("id") == null) {
+      localStorage.setItem("id", generateUuid());
+    }
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        columnGap: "10%",
+      }}
+    >
+      <Player></Player>
+      <WebSocketContextProvider>
+        <Chat showId={showId}></Chat>
+      </WebSocketContextProvider>
     </div>
   );
 }

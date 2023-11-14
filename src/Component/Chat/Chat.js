@@ -38,7 +38,7 @@ function Chat({ showId }) {
     console.log(res);
   };
   const getMessage = async () => {
-    const res = await axios.get("/message");
+    const res = await axios.get("https://kgs-backend.vercel.app/message");
     console.log(res);
     setChatMessages((curr) => [...curr, ...res.data.data.message]);
     if (res.data.data.pinned != undefined || res.data.data.pinned != null) {

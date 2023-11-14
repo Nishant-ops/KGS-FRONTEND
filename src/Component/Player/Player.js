@@ -32,15 +32,13 @@ function Player() {
   return (
     <>
       <div style={{ position: "relative", width: "70%" }}>
-        <div
-          className="video-parent"
-          style={{ width: "100%", aspectRatio: "16/9" }}
-        >
+        <div className="video-parent" style={{ width: "100%", height: "100%" }}>
           <video
             ref={videoRef}
             style={{
               width: "100%",
               height: "100%",
+              objectFit: "cover",
             }}
           ></video>
         </div>

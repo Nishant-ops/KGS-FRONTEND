@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { generateUuid } from "../../utils";
+import { ReactComponent as Delete } from "./delete.svg";
+import "./Main.css";
 
 function Main() {
   const [shows, setShow] = useState({});
@@ -14,7 +16,7 @@ function Main() {
     getShows();
   }, []);
   const getShows = async () => {
-    const data = await axios.get("/show");
+    const data = await axios.get("https://kgs-backend.vercel.app/show");
     if (data.data.data != null || data.data.data != undefined) {
       setHasShow(true);
       setShow(data.data.data.showData[0]);
@@ -29,39 +31,60 @@ function Main() {
       adminName: showAdmin,
       adminId: localStorage.getItem("id"),
     };
-    const data = await axios.post("/show", JSON.stringify(showData), {
-      headers: { "Content-Type": "application/json" },
-    });
-
+    const data = await axios.post(
+      "https://kgs-backend.vercel.app/show",
+      JSON.stringify(showData),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    window.location.pathname = `/show/${showData.id}`;
     console.log(data);
   };
+  const handleDelete = async () => {
+    const data = await axios.delete(
+      `https://kgs-backend.vercel.app/show/${shows.id}`
+    );
+    // console.log(data);
+    if (data.status == 200) {
+      setHasShow(false);
+    }
+  };
   return (
-    <div
-      style={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div className="main">
       {hasShow ? (
-        <div>
+        <>
           <div>{"A Show already exist"}</div>
-          <button onClick={handleShowClick}>{"Go to Show"}</button>
-        </div>
+          <div className="button-div">
+            <button className="show" onClick={handleShowClick}>
+              {"Go to Show"}
+            </button>
+            <Delete
+              onClick={handleDelete}
+              style={{
+                height: "25px",
+                width: "25px",
+                cursor: "pointer",
+                padding: "12px",
+              }}
+            />
+          </div>
+        </>
       ) : (
-        <div>
+        <>
           <div>{"createShow"}</div>
           <input
+            className="input-admin-name"
             disabled={hasName}
             placeholder={
               hasName == false ? "enter admin name" : `start as ${showAdmin}`
             }
             onChange={(e) => setShowAdmin(e.target.value)}
           ></input>
-          <button onClick={handleCreateShow}>{"start show"}</button>
-        </div>
+          <button className="show" onClick={handleCreateShow}>
+            {"start show"}
+          </button>
+        </>
       )}
     </div>
   );

@@ -1,0 +1,27 @@
+.main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+}
+.input-admin-name {
+  border-radius: 12px;
+  padding: 12px;
+}
+.show {
+  background: #1462ff;
+  border-radius: 12px;
+  box-shadow: 0 6px 30px -10px #4a74c9;
+  overflow: hidden;
+  transform: translateX(0);
+  height: 40px;
+  cursor: pointer;
+}
+.button-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

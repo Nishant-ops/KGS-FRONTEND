@@ -24,7 +24,9 @@ function Chat({ showId }) {
     getMessage();
   }, []);
   const getShow = async () => {
-    const res = await axios.get(`/show/${showId}`);
+    const res = await axios.get(
+      `https://kgs-backend.vercel.app/show/${showId}`
+    );
     if (res.data.data.showData[0].adminId == localStorage.getItem("id")) {
       localStorage.setItem("role", "admin");
       setUserRole("admin");
@@ -69,9 +71,13 @@ function Chat({ showId }) {
     setInputMessage("");
     console.log(ws);
     if (ws.current.readyState === 1) ws.current.send(JSON.stringify(a));
-    const req = await axios.post("/message", JSON.stringify(a), {
-      headers: { "Content-Type": "application/json" },
-    });
+    const req = await axios.post(
+      "https://kgs-backend.vercel.app/message",
+      JSON.stringify(a),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     const end = document.querySelector(".end-div");
   };
   const handlePinClick = async (a, b) => {
@@ -81,7 +87,10 @@ function Chat({ showId }) {
         name: pinnedMsg.name,
         type: "unpinned",
       };
-      const res = await axios.delete("/pinned/varun", JSON.stringify(pin));
+      const res = await axios.delete(
+        `https://kgs-backend.vercel.app/pinned/${pinnedMsg.name}`,
+        JSON.stringify(pin)
+      );
       if (ws.current.readyState === 1) ws.current.send(JSON.stringify(pin));
     } else {
       const pin = {
@@ -89,9 +98,13 @@ function Chat({ showId }) {
         name: a,
         type: "pinned",
       };
-      const res = await axios.post("/pinned", JSON.stringify(pin), {
-        headers: { "Content-Type": "application/json" },
-      });
+      const res = await axios.post(
+        "https://kgs-backend.vercel.app/pinned",
+        JSON.stringify(pin),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (ws.current.readyState === 1) ws.current.send(JSON.stringify(pin));
     }
   };
@@ -99,18 +112,7 @@ function Chat({ showId }) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ height: "fit-content", textAlign: "center" }}>Chat</div>
       {hasPinned && (
-        <div
-          className="messageBox"
-          style={{
-            borderRadius: "20px",
-            border: "1px solid black",
-            padding: "10px",
-            width: "200px",
-            marginTop: "10px",
-            scrollSnapAlign: "start",
-            background: "blue",
-          }}
-        >
+        <div className="pinned-messageBox">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ color: "white" }}>{pinnedMsg?.name}</div>
             {userRole == "admin" && (
@@ -127,40 +129,11 @@ function Chat({ showId }) {
           <div style={{ color: "white" }}>{pinnedMsg?.message}</div>
         </div>
       )}
-      <div
-        className="chatList"
-        style={{
-          rowGap: "10px",
-          display: "flex",
-          flexDirection: "column",
-          flex: "1 1 auto",
-          position: "relative",
-        }}
-      >
-        <div
-          className="chat-message-box-parent"
-          style={{
-            position: "absolute",
-            bottom: "10px",
-            height: "auto",
-            maxHeight: "100%",
-            overflowY: "scroll",
-            scrollSnapType: "y mandatory",
-          }}
-        >
+      <div className="chatList">
+        <div className="chat-message-box-parent">
           {chatMessage.length > 0 &&
             chatMessage.map((messageData, index) => (
-              <div
-                className="messageBox"
-                style={{
-                  borderRadius: "20px",
-                  border: "1px solid black",
-                  padding: "10px",
-                  width: "200px",
-                  marginTop: "10px",
-                  scrollSnapAlign: "start",
-                }}
-              >
+              <div className="messageBox">
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
@@ -185,8 +158,9 @@ function Chat({ showId }) {
         </div>
       </div>
 
-      <div style={{ height: "fit-content" }}>
+      <div style={{ height: "fit-content", paddingBottom: "20px" }}>
         <input
+          className="message-input"
           placeholder={
             hasName === false ? "Enter your name" : "Enter a message"
           }
@@ -197,7 +171,9 @@ function Chat({ showId }) {
           }
           value={hasName === false ? name : inputMessage}
         />
-        <button onClick={handleClick}>{"Submit"}</button>
+        <button className="submit-button" onClick={handleClick}>
+          {"Submit"}
+        </button>
       </div>
     </div>
   );

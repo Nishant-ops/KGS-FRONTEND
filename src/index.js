@@ -1,16 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+
 import Main from "./Component/Main/Main";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Show from "./Component/Show/Show";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter basename="/">
     <Routes>
       <Route path="/" element={<Main />} />
-      <Route path="/show/:id" element={<App />} />
+      <Route path="/show/:id" element={<Show />} />
     </Routes>
   </BrowserRouter>
 );

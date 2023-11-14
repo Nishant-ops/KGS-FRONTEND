@@ -9,7 +9,7 @@ function Player() {
     if (videoRef && videoRef.current) {
       if (Hls.isSupported()) {
         var hls = new Hls();
-        hls.loadSource("http://localhost:3000/video/master.m3u8");
+        hls.loadSource("/video/master.m3u8");
         hls.on(Hls.Events.MANIFEST_PARSED, function (events, data) {
           const a = hls.levels.map((l) => l.height);
           console.log("a", a);

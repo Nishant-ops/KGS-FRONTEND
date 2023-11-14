@@ -25,7 +25,7 @@ function WebSocketContextProvider(props) {
       ws.current.removeEventListener("message", null);
       ws.current.close();
     }
-    ws.current = new WebSocket("ws://localhost:7071/ws");
+    ws.current = new WebSocket("wss://kgs-websocket.onrender.com");
     const eventMessage = (event) => {
       const messageData = JSON.parse(event.data);
       if (messageData?.type == "pinned") {

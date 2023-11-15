@@ -16,38 +16,50 @@ function Main() {
     getShows();
   }, []);
   const getShows = async () => {
-    const data = await axios.get("https://kgs-backend.vercel.app/show");
-    if (data.data.data != null || data.data.data != undefined) {
-      setHasShow(true);
-      setShow(data.data.data.showData[0]);
+    try {
+      const data = await axios.get("https://kgs-backend.vercel.app/show");
+      if (data.data.data != null || data.data.data != undefined) {
+        setHasShow(true);
+        setShow(data.data.data.showData[0]);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
   const handleShowClick = () => {
     window.location.pathname = `/show/${shows.id}`;
   };
   const handleCreateShow = async () => {
-    const showData = {
-      id: Date.now(),
-      adminName: showAdmin,
-      adminId: localStorage.getItem("id"),
-    };
-    const data = await axios.post(
-      "https://kgs-backend.vercel.app/show",
-      JSON.stringify(showData),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    window.location.pathname = `/show/${showData.id}`;
-    console.log(data);
+    try {
+      const showData = {
+        id: Date.now(),
+        adminName: showAdmin,
+        adminId: localStorage.getItem("id"),
+      };
+      const data = await axios.post(
+        "https://kgs-backend.vercel.app/show",
+        JSON.stringify(showData),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      window.location.pathname = `/show/${showData.id}`;
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const handleDelete = async () => {
-    const data = await axios.delete(
-      `https://kgs-backend.vercel.app/show/${shows.id}`
-    );
-    // console.log(data);
-    if (data.status == 200) {
-      setHasShow(false);
+    try {
+      const data = await axios.delete(
+        `https://kgs-backend.vercel.app/show/${shows.id}`
+      );
+      // console.log(data);
+      if (data.status == 200) {
+        setHasShow(false);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
   return (
